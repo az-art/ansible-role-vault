@@ -1,0 +1,17 @@
+---
+# File: tasks/main.yml - Main tasks for Vault
+
+- import_tasks: preflight.yml
+
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install dependancies and Vault
+  include: install.yml
+  when:
+    - installation_required | bool
+
+- name: Configure Vault
+  include: configure.yml
+  when:
+    - installation_required | bool

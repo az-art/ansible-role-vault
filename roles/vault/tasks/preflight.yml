@@ -1,0 +1,42 @@
+---
+- name: Check distribution compatibility
+  fail:
+    msg: "{{ ansible_distribution }} is not supported by this role"
+  when: ansible_distribution not in ['RedHat', 'CentOS', 'Amazon']
+
+- name: Fail if not a new release of Red Hat / CentOS
+  fail:
+    msg: "{{ ansible_distribution_version }} is not a supported version of {{ ansible_distribution }} for this role"
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS']
+    - ansible_distribution_version is version(7, '<')
+
+- name: Check for vault_redirect_address usage
+  debug:
+    msg: "vault_redirect_address is deprecated. Check for vault_api_addr in the README."
+  when: vault_redirect_address is defined
+
+
+- name: Check Vault installation
+  command: command vault
+  environment:
+    PATH: "{{ vault_bin_path }}:{{ ansible_env.PATH }}"
+  register: vault_installation
+  changed_when: false
+  ignore_errors: true
+  check_mode: false
+
+- name: Get installed Vault version
+  shell: |
+    set -o pipefail
+    {{ vault_installation.stdout }} -version | cut -d' ' -f2 | tr -d 'v'
+  args:
+    executable: /bin/bash
+  when: not vault_installation is failed
+  changed_when: false
+  check_mode: false
+  register: installed_vault_version
+
+- name: Compute if installation is required
+  set_fact:
+    installation_required: "{{ vault_installation is failed or installed_vault_version.stdout != vault_version }}"

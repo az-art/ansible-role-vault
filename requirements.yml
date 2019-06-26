@@ -1,0 +1,5 @@
+#---
+#- src: git@ssh.dev.azure.com:v3/accesspay/BankSense-DevOps/ansible-role-node-exporter
+#  name: ansible-node-exporter
+#  version: master
+#  scm: git
