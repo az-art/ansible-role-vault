@@ -17,6 +17,6 @@
     - installation_required | bool
 
 - name: Unseal Vault
-  include: configure.yml
+  include: unseal.yml
   when:
     - vault_unseal_required | bool
