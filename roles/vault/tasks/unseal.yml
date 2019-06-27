@@ -15,8 +15,8 @@
 
 - name: Initialise Vault operator
   shell: "{{ vault_bin_path }}/vault operator init -key-shares=5 -key-threshold=3 -format json"
-  environment:
-    VAULT_ADDR: "http://127.0.0.1:8200"
+#  environment:
+#    VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   register: vault_init_results
 
 - name: Parse output of vault init
@@ -48,6 +48,6 @@
 - name: Unseal vault with unseal keys
   shell: |
     {{ vault_bin_path }}/vault operator unseal {{ item.stdout }}
-  environment:
-    VAULT_ADDR: "http://127.0.0.1:8200"
+#  environment:
+#    VAULT_ADDR: "http://127.0.0.1:8200"
   with_items: "{{unseal_keys.results}}"
