@@ -47,8 +47,8 @@
     mode: "0600"
   when: vault_gkms | bool
 
-  - name: Display all variables/facts known for a host
-    debug: var=hostvars[inventory_hostname]
+- name: Display all variables/facts known for a host
+  debug: var=hostvars[inventory_hostname]
 
 - name: Vault main configuration
   become: true
