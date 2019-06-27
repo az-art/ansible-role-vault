@@ -14,7 +14,7 @@
   become: no
 
 - name: Initialise Vault operator
-  shell: {{ vault_bin_path }}/vault operator init -key-shares=5 -key-threshold=3 -format json
+  shell: "{{ vault_bin_path }}/vault operator init -key-shares=5 -key-threshold=3 -format json"
   environment:
     VAULT_ADDR: "http://127.0.0.1:8200"
   register: vault_init_results
