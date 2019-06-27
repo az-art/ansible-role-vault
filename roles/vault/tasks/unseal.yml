@@ -4,6 +4,7 @@
     path: "{{ unseal_keys_dir_output }}"
     state: directory
   delegate_to: localhost
+  sudo: False
 
 - name: Create root key directories
   file:
