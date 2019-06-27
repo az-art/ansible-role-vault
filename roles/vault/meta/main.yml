@@ -1,6 +1,6 @@
 galaxy_info:
   author: Artsiom Azarenka
-  description: Amazon ElasticSearch proxy Role
+  description: Vault Role
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 2.4
 

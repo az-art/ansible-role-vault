@@ -33,10 +33,14 @@ vault_enable_logrotate: false
 vault_logrotate_freq: 7
 vault_logrotate_template: vault_logrotate.j2
 
+# Unseal
+vault_unseal_required: true
+unseal_keys_dir_output: "{{ playbook_dir }}/unsealKeys"
+root_token_dir_output: "{{ playbook_dir }}/rootToken"
+
 # ---------------------------------------------------------------------------
 # Vault variables
 # ---------------------------------------------------------------------------
-
 vault_group_name: vault_instances
 vault_cluster_name: dc1
 vault_datacenter: dc1

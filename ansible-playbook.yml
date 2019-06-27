@@ -8,6 +8,7 @@
     vault_cluster_disable: True
     vault_log_level: debug
     vault_address: "0.0.0.0"
+    vault_enable_logrotate: True
 
   pre_tasks:
     - ec2_metadata_facts:
