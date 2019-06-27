@@ -4,13 +4,14 @@
     path: "{{ unseal_keys_dir_output }}"
     state: directory
   delegate_to: localhost
-  sudo: False
+  become: false
 
 - name: Create root key directories
   file:
     path: "{{ root_token_dir_output }}"
     state: directory
   delegate_to: localhost
+  become: false
 
 - name: Initialise Vault operator
   shell: vault operator init -key-shares=5 -key-threshold=3 -format json
