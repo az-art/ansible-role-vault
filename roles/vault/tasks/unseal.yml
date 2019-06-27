@@ -4,17 +4,17 @@
     path: "{{ unseal_keys_dir_output }}"
     state: directory
   delegate_to: localhost
-  become: false
+  become: no
 
 - name: Create root key directories
   file:
     path: "{{ root_token_dir_output }}"
     state: directory
   delegate_to: localhost
-  become: false
+  become: no
 
 - name: Initialise Vault operator
-  shell: vault operator init -key-shares=5 -key-threshold=3 -format json
+  shell: {{ vault_bin_path }}/vault operator init -key-shares=5 -key-threshold=3 -format json
   environment:
     VAULT_ADDR: "http://127.0.0.1:8200"
   register: vault_init_results
@@ -29,9 +29,25 @@
     content: "{{ item.1 }}"
   with_indexed_items: "{{ vault_init_parsed.unseal_keys_hex }}"
   delegate_to: localhost
+  become: no
 
 - name: Write root token to file
   copy:
     content: "{{ vault_init_parsed.root_token }}"
     dest: "{{root_token_dir_output}}/rootkey"
   delegate_to: localhost
+  become: no
+
+- name: Reading unseal key contents
+  command: cat {{item}}
+  register: unseal_keys
+  with_fileglob: "{{ unseal_keys_dir_output }}/*"
+  delegate_to: localhost
+  become: no
+
+- name: Unseal vault with unseal keys
+  shell: |
+    {{ vault_bin_path }}/vault operator unseal {{ item.stdout }}
+  environment:
+    VAULT_ADDR: "http://127.0.0.1:8200"
+  with_items: "{{unseal_keys.results}}"
