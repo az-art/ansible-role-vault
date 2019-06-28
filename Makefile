@@ -9,20 +9,20 @@ default: help ;
 all: build
 
 build-ami: validate update
-	@echo -e '>>>>>>>>>>>>>> Build AMI.'
-	@packer build ${FILENAME}
+	@ echo -e '>>>>>>>>>>>>>> Build AMI.'
+	@ packer build ${FILENAME}
 
 validate:
-	@echo -e '>>>>>>>>>>>>>> Validate JSON.'
-	@packer validate ${FILENAME}
+	@ echo -e '>>>>>>>>>>>>>> Validate JSON.'
+	@ packer validate ${FILENAME}
 
 update:
-	@echo -e '>>>>>>>>>>>>>> Fetching updates from git.'
-	@git pull
+	@ echo -e '>>>>>>>>>>>>>> Fetching updates from git.'
+	@ git pull
 
 test:
-	@echo -e '>>>>>>>>>>>>>> Execute Molecule tests.'
-	@./roles/vault/tox
+	@ echo -e '>>>>>>>>>>>>>> Execute Molecule tests.'
+	@ tox -c ./roles/vault/tox.ini
 
 
 help:
