@@ -1,9 +1,7 @@
 import pytest
 import os
 import yaml
-import testinfra.utils.ansible_runner
 
-import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
@@ -12,6 +10,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 def AnsibleDefaults():
     with open("../../defaults/main.yml", 'r') as stream:
         return yaml.load(stream)
+
 
 @pytest.mark.parametrize("dirs", [
     "/etc/vault.d",
