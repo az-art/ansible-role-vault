@@ -48,6 +48,8 @@
 - name: Unseal vault with unseal keys
   shell: |
     {{ vault_bin_path }}/vault operator unseal {{ item.stdout }}
+  vars:
+    vault_addr_protocol: "{{ vault_tls_disable | ternary('http', 'https') }}"
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   with_items: "{{unseal_keys.results}}"
