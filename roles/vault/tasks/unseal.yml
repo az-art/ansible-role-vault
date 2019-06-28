@@ -85,3 +85,5 @@
   when:
     - not vault_status_parsed.initialized | bool
     - vault_status_parsed.sealed | bool
+  tags:
+    - skip_ansible_lint
