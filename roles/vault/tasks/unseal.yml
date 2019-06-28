@@ -15,6 +15,8 @@
 
 - name: Initialise Vault operator
   shell: "{{ vault_bin_path }}/vault operator init -key-shares=5 -key-threshold=3 -format json"
+  vars:
+    vault_addr_protocol: "{{ vault_tls_disable | ternary('http', 'https') }}"
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   register: vault_init_results
