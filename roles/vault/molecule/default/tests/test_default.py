@@ -51,11 +51,11 @@ def test_service(host):
 
 def test_socket(host, AnsibleDefaults):
     vault_port = AnsibleDefaults['vault_port']
-    s = host.socket("tcp://0.0.0.0:" + vault_port)
+    s = host.socket("tcp://0.0.0.0:" + str(vault_port))
     assert s.is_listening
 
 
 def test_version(host, AnsibleDefaults):
     version = os.getenv('VAULT', AnsibleDefaults['vault_version'])
-    out = host.run("/usr/local/bin/vaul --version").stderr
+    out = host.run("/usr/local/bin/vault --version").stderr
     assert "vault, version " + version in out
