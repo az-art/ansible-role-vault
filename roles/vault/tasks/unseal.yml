@@ -23,7 +23,7 @@
 
 
 - name: Display all variables/facts known for a host
-  debug: vault_init_status_result
+  debug: var=vault_init_status_result
 
 - name: Initialise Vault operator
   shell: "{{ vault_bin_path }}/vault operator init -key-shares=5 -key-threshold=3 -format json"
