@@ -35,11 +35,12 @@
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   register: vault_init_results
-  when: vault_status_parsed.initialized is false
+  when: not vault_status_parsed.initialized | bool
 
 - name: Parse output of vault init
   set_fact:
     vault_init_parsed: "{{ vault_init_results.stdout | from_json }}"
+  when: not vault_status_parsed.initialized | bool
 
 - name: Write unseal keys to files
   copy:
@@ -48,7 +49,7 @@
   with_indexed_items: "{{ vault_init_parsed.unseal_keys_hex }}"
   delegate_to: localhost
   become: no
-  when: vault_status_parsed.initialized is false
+  when: not vault_status_parsed.initialized | bool
 
 - name: Write root token to file
   copy:
@@ -56,7 +57,7 @@
     dest: "{{root_token_dir_output}}/rootkey"
   delegate_to: localhost
   become: no
-  when: vault_status_parsed.initialized is false
+  when: not vault_status_parsed.initialized | bool
 
 - name: Reading unseal key contents
   command: cat {{item}}
@@ -64,7 +65,9 @@
   with_fileglob: "{{ unseal_keys_dir_output }}/*"
   delegate_to: localhost
   become: no
-  when: vault_status_parsed.initialized is false and vault_status_parsed.sealed is true
+  when: 
+    - not vault_status_parsed.initialized | bool
+    - not vault_status_parsed.sealed | bool
 
 - name: Unseal vault with unseal keys
   shell: |
@@ -74,4 +77,6 @@
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   with_items: "{{ unseal_keys.results }}"
-  when: vault_status_parsed.initialized is false and vault_status_parsed.sealed is true
+  when: 
+    - not vault_status_parsed.initialized | bool
+    - not vault_status_parsed.sealed | bool
