@@ -20,6 +20,11 @@ update:
 	@echo -e '>>>>>>>>>>>>>> Fetching updates from git.'
 	@git pull
 
+test:
+	@echo -e '>>>>>>>>>>>>>> Execute Molecule tests.'
+	@./roles/vault/tox
+
+
 help:
 	@echo "-----------------------------------------------------------------------"
 	@echo "                      Available commands                              -"
