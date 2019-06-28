@@ -39,7 +39,7 @@ def test_files(host, files):
 
 
 def test_user(host):
-#    assert host.group("vault").exists
+# assert host.group("vault").exists
     assert host.user("vault").exists
 
 
