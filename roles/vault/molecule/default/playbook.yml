@@ -4,7 +4,8 @@
   any_errors_fatal: true
   vars:
     vault_backend: file
-    vault_cluster_disable: True
+    vault_cluster_disable: true
+    vault_address: "0.0.0.0"
 
   roles:
     - role: vault

@@ -1,0 +1,5 @@
+molecule>=2.20.1
+docker
+ansible-lint>=4.1.0
+testinfra>=1.19.0
+jmespath
