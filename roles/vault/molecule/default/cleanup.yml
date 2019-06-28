@@ -1,0 +1,19 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  vars:
+    unseal_keys_dir_output: "{{ playbook_dir }}/unsealKeys"
+    root_token_dir_output: "{{ playbook_dir }}/rootToken"
+  gather_facts: false
+  no_log: "{{ not lookup('env', 'MOLECULE_DEBUG') | bool }}"
+  tasks:
+    - name: Remove temp unseal directories
+      file:
+        path: "{{ unseal_keys_dir_output }}"
+        state: absent
+
+    - name: Remove temp root key directories
+      file:
+        path: "{{ root_token_dir_output }}"
+        state: absent
