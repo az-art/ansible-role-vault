@@ -20,6 +20,7 @@
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   register: vault_status_results
+  ignore_errors: true
   tags:
     - skip_ansible_lint
 
