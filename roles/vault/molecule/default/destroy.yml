@@ -4,8 +4,6 @@
   connection: local
   gather_facts: false
   vars:
-    unseal_keys_dir_output: "{{ playbook_dir }}/unsealKeys"
-    root_token_dir_output: "{{ playbook_dir }}/rootToken"
   no_log: "{{ not lookup('env', 'MOLECULE_DEBUG') | bool }}"
   tasks:
     - name: Destroy molecule instance(s)
@@ -33,17 +31,3 @@
         docker_host: "{{ item.docker_host | default('unix://var/run/docker.sock') }}"
         state: absent
       with_items: "{{ molecule_yml.platforms | molecule_get_docker_networks }}"
-
-    - name: Create unseal directories
-      file:
-        path: "{{ unseal_keys_dir_output }}"
-        state: directory
-      delegate_to: localhost
-      become: no
-
-    - name: Create root key directories
-      file:
-        path: "{{ root_token_dir_output }}"
-        state: directory
-      delegate_to: localhost
-      become: no
