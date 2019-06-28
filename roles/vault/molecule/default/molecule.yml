@@ -16,7 +16,22 @@ provisioner:
   name: ansible
   lint:
     name: ansible-lint
+  test_sequence:
+    - lint
+    - cleanup
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+#    - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
 verifier:
   name: testinfra
   lint:
     name: flake8
+    enabled: true

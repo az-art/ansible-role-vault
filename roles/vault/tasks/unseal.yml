@@ -72,7 +72,7 @@
   become: no
   when:
     - not vault_status_parsed.initialized | bool
-    - not vault_status_parsed.sealed | bool
+    - vault_status_parsed.sealed | bool
 
 - name: Unseal vault with unseal keys
   shell: |
@@ -84,4 +84,4 @@
   with_items: "{{ unseal_keys.results }}"
   when:
     - not vault_status_parsed.initialized | bool
-    - not vault_status_parsed.sealed | bool
+    - vault_status_parsed.sealed | bool
