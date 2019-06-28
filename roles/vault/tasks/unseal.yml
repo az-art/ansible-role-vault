@@ -65,7 +65,7 @@
   with_fileglob: "{{ unseal_keys_dir_output }}/*"
   delegate_to: localhost
   become: no
-  when: 
+  when:
     - not vault_status_parsed.initialized | bool
     - not vault_status_parsed.sealed | bool
 
@@ -77,6 +77,6 @@
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   with_items: "{{ unseal_keys.results }}"
-  when: 
+  when:
     - not vault_status_parsed.initialized | bool
     - not vault_status_parsed.sealed | bool
