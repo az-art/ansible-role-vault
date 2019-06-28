@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    vault_backend: file
+    vault_cluster_disable: True
+
+  roles:
+    - role: vault
