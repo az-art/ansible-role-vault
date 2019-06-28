@@ -57,5 +57,5 @@ def test_socket(host, AnsibleDefaults):
 
 def test_version(host, AnsibleDefaults):
     version = os.getenv('VAULT', AnsibleDefaults['vault_version'])
-    out = host.run("/usr/local/bin/vault --version")
-    assert "vault, version " + version in out
+    out = host.run("/usr/local/bin/vault --version").stdout
+    assert "Vault v" + version in out
