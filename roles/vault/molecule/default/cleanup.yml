@@ -18,7 +18,3 @@
         path: "{{ root_token_dir_output }}"
         state: absent
 
-    # - name: Remove temp .tox folder
-    #   file:
-    #     path: "{{ playbook_dir }}/.tox"
-    #     state: absent
