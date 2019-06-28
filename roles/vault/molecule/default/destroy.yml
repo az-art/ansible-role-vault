@@ -30,3 +30,17 @@
         docker_host: "{{ item.docker_host | default('unix://var/run/docker.sock') }}"
         state: absent
       with_items: "{{ molecule_yml.platforms | molecule_get_docker_networks }}"
+
+    - name: Create unseal directories
+      file:
+        path: "{{ unseal_keys_dir_output }}"
+        state: directory
+      delegate_to: localhost
+      become: no
+
+    - name: Create root key directories
+      file:
+        path: "{{ root_token_dir_output }}"
+        state: directory
+      delegate_to: localhost
+      become: no
