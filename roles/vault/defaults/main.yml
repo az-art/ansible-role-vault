@@ -47,7 +47,7 @@ vault_datacenter: dc1
 vault_log_level: "{{ lookup('env','VAULT_LOG_LEVEL') | default('info', true) }}"
 vault_iface: "{{ lookup('env','VAULT_IFACE') | default('eth0', true) }}"
 vault_address: "{{ hostvars[inventory_hostname]['ansible_'+vault_iface]['ipv4']['address'] }}"
-#vault_address: "0.0.0.0"
+# vault_address: "0.0.0.0"
 vault_ui: "{{ lookup('env', 'VAULT_UI') | default(true, true) }}"
 vault_port: 8200
 vault_main_config: "{{ vault_config_path }}/vault_main.hcl"
@@ -65,7 +65,7 @@ vault_backend_etcd: vault_backend_etcd.j2
 vault_cluster_disable: false
 vault_cluster_address: "{{ hostvars[inventory_hostname]['ansible_'+vault_iface]['ipv4']['address'] }}:{{ (vault_port | int) + 1}}"
 vault_cluster_addr: "{{ vault_protocol }}://{{ vault_cluster_address }}"
-#vault_api_addr: "{{ vault_protocol }}://0.0.0.0:{{ vault_port }}"
+# vault_api_addr: "{{ vault_protocol }}://0.0.0.0:{{ vault_port }}"
 vault_api_addr: "{{ vault_protocol }}://{{ vault_redirect_address | default(hostvars[inventory_hostname]['ansible_'+vault_iface]['ipv4']['address']) }}:{{ vault_port }}"
 
 vault_max_lease_ttl: "768h"

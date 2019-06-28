@@ -106,7 +106,7 @@
     path: "{{ vault_home }}/.bashrc"
     line: "export VAULT_ADDR='{{ vault_tls_disable | ternary('http', 'https') }}://{{ vault_address }}:{{ vault_port }}'"
     create: true
-#curl -v "http://$(curl http://169.254.169.254/latest/meta-data/local-ipv4):8200"
+# curl -v "http://$(curl http://169.254.169.254/latest/meta-data/local-ipv4):8200"
 
 - name: Insert CA cert export in dotfile
   lineinfile:
@@ -122,7 +122,7 @@
   vars:
     vault_addr_protocol: "{{ vault_tls_disable | ternary('http', 'https') }}"
     vault_addr: "{{ (vault_address == '0.0.0.0') | ternary('127.0.0.1', vault_address) }}"
-    #vault_addr: "0.0.0.0"
+    # vault_addr: "0.0.0.0"
   uri:
     validate_certs: "{{ validate_certs_during_api_reachable_check | bool }}"
     url: "{{ vault_addr_protocol }}://{{ vault_addr }}:{{ vault_port }}/v1/sys/health"
