@@ -48,10 +48,10 @@ def test_service(host):
 
 def test_socket(host, AnsibleDefaults):
     addr = AnsibleDefaults['vault_address']
-    s = host.socket("tcp://addr:8200")
+    s = host.socket("tcp://" + addr + ":8200")
     assert s.is_listening
 
 def test_version(host, AnsibleDefaults):
-    version = os.getenv('PROMETHEUS', AnsibleDefaults['prometheus_version'])
+    version = os.getenv('VAULT', AnsibleDefaults['prometheus_version'])
     out = host.run("/usr/local/bin/vaul --version").stderr
     assert "vault, version " + version in out
