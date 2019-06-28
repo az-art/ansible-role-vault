@@ -20,6 +20,8 @@
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   register: vault_status_results
+  tags:
+    - skip_ansible_lint
 
 - name: Parse output of vault status
   set_fact:
@@ -36,6 +38,8 @@
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   register: vault_init_results
   when: not vault_status_parsed.initialized | bool
+  tags:
+    - skip_ansible_lint
 
 - name: Parse output of vault init
   set_fact:
@@ -54,13 +58,13 @@
 - name: Write root token to file
   copy:
     content: "{{ vault_init_parsed.root_token }}"
-    dest: "{{root_token_dir_output}}/rootkey"
+    dest: "{{ root_token_dir_output }}/rootkey"
   delegate_to: localhost
   become: no
   when: not vault_status_parsed.initialized | bool
 
 - name: Reading unseal key contents
-  command: cat {{item}}
+  command: cat {{ item }}
   register: unseal_keys
   with_fileglob: "{{ unseal_keys_dir_output }}/*"
   delegate_to: localhost
