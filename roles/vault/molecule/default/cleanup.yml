@@ -17,4 +17,3 @@
       file:
         path: "{{ root_token_dir_output }}"
         state: absent
-
