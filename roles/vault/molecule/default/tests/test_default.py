@@ -6,6 +6,7 @@ import testinfra.utils.ansible_runner
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
+
 @pytest.fixture()
 def AnsibleDefaults():
     with open("../../defaults/main.yml", 'r') as stream:
@@ -24,6 +25,7 @@ def test_directories(host, dirs):
     d = host.file(dirs)
     assert d.is_directory
     assert d.exists
+
 
 @pytest.mark.parametrize("files", [
     "/etc/vault.d/vault_main.hcl",
@@ -46,10 +48,12 @@ def test_service(host):
     assert s.is_enabled
     assert s.is_running
 
+
 def test_socket(host, AnsibleDefaults):
     addr = AnsibleDefaults['vault_address']
     s = host.socket("tcp://" + addr + ":8200")
     assert s.is_listening
+
 
 def test_version(host, AnsibleDefaults):
     version = os.getenv('VAULT', AnsibleDefaults['prometheus_version'])
