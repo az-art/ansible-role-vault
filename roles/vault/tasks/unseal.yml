@@ -13,6 +13,15 @@
   delegate_to: localhost
   become: no
 
+- name: Is Vault already initialized
+  shell: "{{ vault_bin_path }}/vault status -format json"
+  vars:
+    vault_addr_protocol: "{{ vault_tls_disable | ternary('http', 'https') }}"
+  environment:
+    VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
+  register: vault_init_status_result
+
+
 - name: Initialise Vault operator
   shell: "{{ vault_bin_path }}/vault operator init -key-shares=5 -key-threshold=3 -format json"
   vars:
@@ -20,6 +29,7 @@
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
   register: vault_init_results
+  when: vault_init_status_result.initialized is false
 
 - name: Parse output of vault init
   set_fact:
@@ -32,6 +42,7 @@
   with_indexed_items: "{{ vault_init_parsed.unseal_keys_hex }}"
   delegate_to: localhost
   become: no
+  when: vault_init_status_result.initialized is false
 
 - name: Write root token to file
   copy:
@@ -39,6 +50,7 @@
     dest: "{{root_token_dir_output}}/rootkey"
   delegate_to: localhost
   become: no
+  when: vault_init_status_result.initialized is false
 
 - name: Reading unseal key contents
   command: cat {{item}}
@@ -46,6 +58,7 @@
   with_fileglob: "{{ unseal_keys_dir_output }}/*"
   delegate_to: localhost
   become: no
+  when: vault_init_status_result.initialized is false and vault_init_status_result.sealed is true
 
 - name: Unseal vault with unseal keys
   shell: |
@@ -54,4 +67,5 @@
     vault_addr_protocol: "{{ vault_tls_disable | ternary('http', 'https') }}"
   environment:
     VAULT_ADDR: "{{ vault_addr_protocol }}://{{ vault_address }}:{{ vault_port }}"
-  with_items: "{{unseal_keys.results}}"
+  with_items: "{{ unseal_keys.results }}"
+  when: vault_init_status_result.initialized is false and vault_init_status_result.sealed is true

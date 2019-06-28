@@ -1,11 +1,19 @@
 ---
 galaxy_info:
   author: Artsiom Azarenka
-  description: Vault Role
-  license: license (GPLv2, CC-BY, etc)
-  min_ansible_version: 2.4
+  description: HashiCorp Vault Role
+  license: BSD
+  min_ansible_version: 2.7
 
-  galaxy_tags: []
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
 
+  galaxy_tags:
+    - networking
+    - security
+    - system
 
 dependencies: []
